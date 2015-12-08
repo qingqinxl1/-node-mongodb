@@ -14,10 +14,13 @@
   },
   "devDependencies": {
     "bcrypt": "^0.8.5",
+    "connect-mongodb": "^1.1.5",
+    "express-session": "^1.12.1",
     "grunt": "^0.4.5",
     "grunt-concurrent": "^2.1.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-nodemon": "^0.4.0"
+    "grunt-nodemon": "^0.4.0",
+    "morgan": "^1.6.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

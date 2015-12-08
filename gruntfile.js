@@ -17,19 +17,21 @@ module.exports = function(grunt){
 		},
 
 		nodemon: {
-			options: {
-				file: 'app.js',
-				args: [],
-				ignoredFiles: ['README.md', 'models/**'],
-				watchedExtensions: ['js'],
-				watchedFolders: ['./'],
-				debug: true,
-				delayTime: 1,
-				env: {
+			dev: {
+		        options: {
+					file: 'app.js',
+					args: [],
+					ignoredFiles: ['README.md', 'node_modules/**', '.DS_Store'],
+					watchedExtensions: ['js'],
+					watchedFolders: ['./'],
+					debug: true,
+					delayTime: 1,
+					env: {
 					PORT: 3000
-				},
-				cwd: __dirname
-			}
+					},
+					cwd: __dirname
+		        }
+		    }
 		},
 
 		concurrent: {
