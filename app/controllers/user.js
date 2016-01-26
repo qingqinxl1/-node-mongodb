@@ -1,5 +1,19 @@
 var User = require('../models/user');
 
+//signup page
+exports.signuppage = function(req, res){
+    res.render('signup', {
+        title: '用户注册页'
+    });
+}
+
+//signin page
+exports.signinpage = function(req, res){
+    res.render('signin', {
+        title: '用户登录页'
+    });
+}
+
 //signup
 exports.signup = function(req, res){
     var _user = req.body.user;
@@ -9,12 +23,12 @@ exports.signup = function(req, res){
         if(err) console.log(err);
         
         if(user && user.length){
-            return res.redirect('/');
+            return res.redirect('/signin');
         }else{
             var user = new User(_user);
             user.save(function(err, user){
                 if(err) console.log(err);
-                return res.redirect('/admin/userlist');
+                return res.redirect('/');
             });
         }
     });  
@@ -57,13 +71,14 @@ exports.signin = function(req, res){
                 if(isMatch){
                     console.log('signin success');
                     req.session.user = user;
+                    res.redirect('/');
                 }else{
                     console.log('password is not matched');
+                    res.redirect('/signin');
                 }
-                res.redirect('/');
             });
         }else{
-            res.redirect('/');
+            res.redirect('/signup');
         }
     });
     
@@ -74,4 +89,30 @@ exports.logout = function(req, res){
     delete req.session.user;
     // delete app.locals.user;
     res.redirect('/');
+}
+
+//user middle module
+//need signin
+exports.signinRequired = function(req, res, next){
+    var _user = req.session.user;
+    if(!_user){
+        return res.redirect('/signin');
+    }
+    next();
+}
+
+//need admin authorization
+exports.adminRequired = function(req, res, next){
+    var _user = req.session.user;
+    if(_user.role < 2){
+        return res.redirect('/unauthorized');
+    }
+    next();
+}
+
+//Unauthorized page
+exports.unauthorized = function(req, res){
+    res.render('unauthorized', {
+        title: '未经授权'
+    });
 }

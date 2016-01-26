@@ -5,9 +5,8 @@ block content
       each movie in movies
         .col-md-2
           .thumbnail
-            a(href="/detail/#{movie._id}")
+            a(href="/movie/detail/#{movie._id}")
               img(src="#{movie.poster}", alt="#{movie.title}")
             .caption
               h3 #{movie.title}
-              p: a.btn.btn-primary(href="/detail/#{movie._id}", role="button")
-                观看预告片
+              p: a.btn.btn-primary(href="/movie/detail/#{movie._id}", role="button") 观看预告片

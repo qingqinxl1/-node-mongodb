@@ -1,4 +1,5 @@
 var Movie = require('../models/movie');
+var Comment = require('../models/comment');
 var _ = require('underscore');
 
 /**
@@ -7,13 +8,21 @@ var _ = require('underscore');
 exports.detail = function (req, res) {
     var id = req.params.id;
     Movie.findById(id, function (err, movie) {
-        if (err) {
-            console.log(err);
-        }
-        res.render('detail', {
-            title: 'imooc ' + movie.title,
-            movie: movie
-        });
+        Comment.find({movie: id})
+            .populate('from', 'name')
+            .populate('reply.from reply.to', 'name')
+            .exec(function(err, comments){
+                console.log(comments);
+                if (err) {
+                    console.log(err);
+                }
+                console.log(comments);
+                res.render('detail', {
+                    title: 'imooc ' + movie.title,
+                    movie: movie,
+                    comments: comments
+                });
+            });
     });
 }
 
@@ -51,7 +60,7 @@ exports.save = function (req, res) {
                 if (err) {
                     console.log(err);
                 }
-                res.redirect('/detail/' + movie._id);
+                res.redirect('/movie/detail/' + movie._id);
             })
         })
     } else {
@@ -70,7 +79,7 @@ exports.save = function (req, res) {
             if (err) {
                 console.log(err);
             }
-            res.redirect('/detail/' + movie._id);
+            res.redirect('/movie/detail/' + movie._id);
         });
     }
 }
